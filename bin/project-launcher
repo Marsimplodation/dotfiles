@@ -1,0 +1,40 @@
+#!/bin/bash
+# Check if fzf is installed
+if ! command -v fzf &> /dev/null; then
+    echo "Error: fzf is not installed. Please install it first."
+    exit 1
+fi
+
+dirs=("uni" ".config" "bin" "projects")
+
+# Initialize projects variable
+projects=""
+
+# Iterate through the specified directories
+for root in "${dirs[@]}"; do
+    # Check if the root directory exists
+    if [ -d "$HOME/$root" ]; then
+        # Iterate through subdirectories
+        for dir in "$HOME/$root"/*; do
+            # Check if it's a directory and not empty
+            if [ -d "$dir" ]; then
+                # Iterate through subdirectories of subdirectories
+                for subDir in "$dir"/*; do
+                    if [ -d "$subDir" ]; then
+                        projects="$projects
+$subDir"
+                    fi
+                done
+            projects="$projects
+$dir"
+            fi
+        done
+    projects="$projects
+$HOME/$root"
+    fi
+done
+
+ppath=$(echo "$projects" | fzf --prompt="Select project: " --border --delimiter='\n')
+cd $ppath
+name=$(basename "$ppath")
+zellij attach --create "$name"

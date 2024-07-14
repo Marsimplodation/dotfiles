@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Default project directory
+PROJECT_DIR="$HOME/projects"
+
+# Check if both language and project name are provided
+if [ -z "$1" ] || [ -z "$2" ]; then
+  echo "Error: Both language and project name are required."
+  echo "Usage: $0 [language] [project name]"
+  exit 1
+fi
+
+LANGUAGE=$1
+PROJECT_NAME=$2
+
+# Check if language is supported
+if [ "$LANGUAGE" == "cpp" ]; then
+  PROJECT_PATH="$PROJECT_DIR/$PROJECT_NAME"
+  mkdir -p "$PROJECT_PATH"
+  cp -r ~/bin/project-structures/cpp/* "$PROJECT_PATH/"
+  cd "$PROJECT_PATH"
+  make
+  ln build/compile_commands.json ./
+  tmux
+fi

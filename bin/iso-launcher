@@ -1,0 +1,18 @@
+#!/bin/bash
+# Check if fzf is installed
+if ! command -v fzf &> /dev/null; then
+    echo "Error: fzf is not installed. Please install it first."
+    exit 1
+fi
+
+# Get the list of ISO files using fzf
+iso_path=$(find ~/Downloads -type f -name "*.iso" | fzf --prompt="Select ISO: ")
+
+# Check if the ISO file exists
+if [ ! -f "$iso_path" ]; then
+    echo "Error: ISO file not found at '$iso_path'"
+    exit 1
+fi
+
+# QEMU command
+qemu-system-x86_64 -cdrom "$iso_path" -m 8192 -cpu host -device virtio-vga-gl -enable-kvm -boot d -smp 16 -display sdl,gl=on -parallel none -serial none 
