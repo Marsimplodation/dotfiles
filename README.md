@@ -12,9 +12,9 @@ Welcome to my dotfiles repository! This repository contains my personal configur
 - `.config/wofi/`: My Wofi configuration files with custom themes and settings.
 - `.config/hypr/`: My Hypr configuration files for window management.
 - `.config/nvim/`: My Neovim configuration files with plugins and key mappings.
-- `.config/kitty/`: My Kitty terminal emulator configuration files with custom themes and shortcuts.
+- `.config/kitty/`: My Kitty terminal emulator configuration files with custom themes
 - `.config/waybar/`: My Waybar configuration files with custom modules and styles.
-- `.config/wofi/`: My Wofi configuration files with custom themes and settings.
+- `.config/eww/`: My Eww config files for the quick conrol panel 
 - `bin`: A few custom scripts, that get indexed by the .zshrc
 - `.zshrc`: My Zsh configuration file with Oh My Zsh plugins and themes.
 
