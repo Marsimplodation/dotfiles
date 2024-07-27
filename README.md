@@ -23,7 +23,8 @@ Welcome to my dotfiles repository! This repository contains my personal configur
 To install these dotfiles, you can clone the repository to your config folder 
 
 ```sh
-git clone --recursive https://github.com/Marsimplodation/dotfiles.git ~/
+git clone --recursive https://github.com/Marsimplodation/dotfiles.git dotfiles
+cp -r dotfiles/* ~/
 ```
 
 ## Credits
