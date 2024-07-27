@@ -1,0 +1,27 @@
+layout {
+    tab focus=true {
+        pane {
+            command "nvim"
+        }
+        pane size=2 borderless=true {
+            plugin location="compact-bar"
+        }
+    }
+    tab {
+        pane {
+            command "zsh"
+        }
+        pane size=2 borderless=true {
+            plugin location="compact-bar"
+        }
+    }
+    tab {
+        pane {
+            command "zsh"
+        }
+        pane size=2 borderless=true {
+            plugin location="compact-bar"
+        }
+    }
+}
+
