@@ -20,7 +20,8 @@ Welcome to my dotfiles repository! This repository contains my personal configur
 
 ## Installation
 
-To install these dotfiles, you can clone the repository to your config folder 
+To install these dotfiles, you can clone the repository to your config folder
+and configure hyprpaper for your wallpaper of choice
 
 ```sh
 git clone --recursive https://github.com/Marsimplodation/dotfiles.git dotfiles
@@ -29,5 +30,5 @@ cp -r dotfiles/* ~/
 
 ## Credits
 
-background image:
+background image in my screenshots:
 https://wallpapersden.com/frieren-hd-frieren-beyond-journey-s-end-wallpaper/1920x1080/
