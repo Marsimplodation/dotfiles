@@ -37,4 +37,26 @@ done
 ppath=$(echo "$projects" | fzf --prompt="Select project: " --border --delimiter='\n')
 cd $ppath
 name=$(basename "$ppath")
-zellij attach --create "$name"
+
+# Check if the session already exists
+tmux has-session -t $name 2>/dev/null
+
+if [ $? != 0 ]; then
+# Create a new Tmux session named "my_session"
+tmux new-session -d -s "$name" -c $ppath
+
+# Rename the first window to 'nvim' and start Neovim
+tmux rename-window -t "$name":0 'nvim'
+tmux send-keys -t "$name":0 'nvim' C-m
+
+# Create a second window and rename it to 'shell'
+tmux new-window -t "$name":1 -n 'shell' -c $ppath
+
+tmux select-window -t $name:0
+fi
+
+# Source the .tmux.conf file
+tmux source-file ~/.tmux.conf
+
+# Attach to the session
+tmux attach-session -t "$name"
