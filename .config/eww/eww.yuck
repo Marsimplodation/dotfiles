@@ -1,0 +1,141 @@
+(defwindow sidepanel [screen]
+            :monitor screen
+           :geometry (geometry :x "10px"
+                               :y "0px"
+                               :width "300px"
+                               :height "95%"
+                               :anchor "center right")
+            :exclusive true
+            :stacking "overlay"
+
+  (dashboard))
+
+(defwidget dashboard []
+(box :orientation "v"
+:halign "fill"
+:space-evenly false
+(title)
+(quick_control)
+(media_panel)
+(audio_panel)
+))
+
+(defwidget audio_panel []
+(box :orientation "v"
+:halign "fill"
+:space-evenly false
+:spacing 1
+:class "quick_control"
+(button :onclick "eww update display_audio_devices=${!display_audio_devices}"
+  (label :text {display_audio_devices ? "Audio Devices   " : "Audio Devices   "}))
+  (for entry in {display_audio_devices ? audio_devices : []}
+   (icon_button 
+            :icon "   ${entry.node_description}"
+            :command '~/.config/eww/scripts/audio -s ${entry.node_name}' )
+    
+    ))
+)
+(defvar display_audio_devices false)
+
+(defwidget title []
+(box :orientation "h"
+:halign "fill"
+:space-evenly false
+:spacing 160
+:class "title_bar"
+(label :text "Dashboard - ${time.hour}:${time.min}")
+(button :onclick "eww close sidepanel" "")
+))
+
+(defwidget quick_control []
+(box :orientation "v"
+:halign "fill"
+:spacing 1
+:class "quick_control"
+(label :text "Quick Controls")
+(poweroff)
+(icon_button :icon "   Screenshot" :command "~/.config/eww/scripts/screenshot > ~/eww_log")
+))
+
+
+
+(defwidget media_panel []
+(box :orientation "v"
+:halign "fill"
+:space-evenly false
+:class "quick_control"
+(label :text "Media Control")
+(box :orientation "h"
+(media_show)
+(media_info)
+)
+))
+
+(defwidget media_show[]
+(box :orientation "v"
+:space-evenly false
+:halign "fill"
+:class "media_info"
+(label :wrap true :text "${media.artist}")
+(image :image-width 100 :image-hieght 100 :path "${media.pic}")
+))
+
+(defwidget media_info []
+(box :orientation "v"
+:halign "fill"
+:space-evenly false
+:class "media_info"
+(label :text "${media.title}" :wrap true)
+(media_control)
+))
+
+(defwidget media_control []
+(box :orientation "h"
+:halign "fill"
+:space-evenly true
+:class "icon"
+(button :onclick "playerctl previous" (label :text ""))
+(button :onclick "playerctl play-pause" (label :text {media.Playing ? "" : ""}))
+(button :onclick "playerctl next" (label :text ""))
+))
+
+
+
+(defwidget poweroff []
+(box :orientation "h"
+:halign "fill"
+:space-evenly true
+(icon_button :icon " Logout" :command "loginctl kill-session self")
+(icon_button :icon " Reboot" :command "reboot")
+(icon_button :icon "  Shutdown" :command "shutdown now")
+)
+)
+
+;;variables
+(defpoll time :interval "5s"
+  `date +'{"hour":"%H","min":"%M"}'`)
+(defpoll media :interval "50ms"
+  `~/.config/eww/scripts/mediapoll`)
+(defpoll audio_devices :interval "60s"
+`~/.config/eww/scripts/audio -l`)
+
+
+;;helper
+(defwidget icon_button [icon command]
+(box :class "icon"
+:orientation "h"
+:halign "fill"
+(button :onclick "${command}"
+(label :wrap true :text "${icon}")))
+)
+
+(defwidget icon [icon]
+(box :class "icon"
+:orientation "h"
+:halign "start"
+:space-evenly false
+(label :text "${icon}"))
+)
+
+
+
