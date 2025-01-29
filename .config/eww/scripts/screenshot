@@ -1,3 +1,0 @@
-#!/bin/bash
-eww close sidepanel
-sleep 0.1 && grim -g "$(slurp)" "$HOME/Pictures/$(date '+%y%m%d_%H-%M-%S').png" &
