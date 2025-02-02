@@ -1,0 +1,46 @@
+#!/bin/bash
+
+STATE_FILE="/tmp/waybar_vr_state"
+
+# Read the current state or default to "off"
+if [ -f "$STATE_FILE" ]; then
+  STATE=$(cat "$STATE_FILE")
+else
+  STATE="off"
+fi
+
+# if no switch arg is supplied exit script
+if [ -z "$1" ]; then
+  if [ "$STATE" == "on" ]; then
+    echo '{"text": "󰔡  VR", "class": "ON"}'
+  else
+    echo '{"text": "󰨙  VR", "class": "OFF"}'
+  fi
+  exit
+fi
+
+# Toggle the state
+if [ "$STATE" == "off" ]; then
+  NEW_STATE="on"
+  STATE="on"
+else
+  NEW_STATE="off"
+  STATE="off"
+fi
+
+# Save the new state
+echo "$NEW_STATE" > "$STATE_FILE"
+
+if [ "$STATE" == "on" ]; then
+  envision -S
+  pactl set-default-sink wivrn
+else
+  dbus-send --dest=io.github.wivrn.Server --type=method_call /io/github/wivrn/Server io.github.wivrn.Server.Quit
+  killall envision
+fi
+# Output the new state for Waybar
+if [ "$STATE" == "on" ]; then
+  echo '{"text": "󰔡  VR", "class": "ON"}'
+else
+  echo '{"text": "󰨙  VR", "class": "OFF"}'
+fi

@@ -91,6 +91,8 @@
     "pulseaudio#audio",
     "bluetooth",
     "network#enp7s0",
+    "custom/spacer",
+    "custom/vr",
     // "battery"
     "custom/sidepanel"
   ],
@@ -108,10 +110,26 @@
     "on-click": "",
     "tooltip": false
   },
+  "custom/spacer": {
+    "format": " | "
+  },
   "custom/sidepanel": {
     "format": "{}  ",
     "on-click": "~/.config/waybar/scripts/sidepanel"
   },
+  
+  "custom/vr": {
+      "exec": "~/.config/waybar/scripts/vr",
+      "return-type": "json",
+      "interval": 1,
+      "format": "{}",
+      "on-click": "~/.config/waybar/scripts/vr switch",
+      "format-icons": {
+        "disabled": "󰨙 ",
+        "default": "󰔡 "
+      }
+  },
+
   "backlight": {
     "format": "{icon} {percent}%",
     "format-icons": [
