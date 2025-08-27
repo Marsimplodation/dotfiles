@@ -92,19 +92,19 @@ local on_attach = function(_, bufnr)
   }
   -- Ensure the servers above are installed
   local mason_lspconfig = require 'mason-lspconfig'
+  local lspconfig = require 'lspconfig'
   
   mason_lspconfig.setup {
     ensure_installed = vim.tbl_keys(servers),
   }
   
-  mason_lspconfig.setup_handlers {
-    function(server_name)
-      require('lspconfig')[server_name].setup {
-        capabilities = capabilities,
-        on_attach = on_attach,
-        settings = servers[server_name],
-        filetypes = (servers[server_name] or {}).filetypes,
-      }
-    end,
+  -- manually setup each server
+  for server_name, server_opts in pairs(servers) do
+    lspconfig[server_name].setup {
+      capabilities = capabilities,
+      on_attach = on_attach,
+      settings = server_opts,
+      filetypes = server_opts.filetypes,
+    }
+  end
   vim.diagnostic.config({ virtual_lines = true })
-  }
