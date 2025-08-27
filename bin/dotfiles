@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REMOTE_REPO="git@github.com:Marsimplodation/dotfiles.git"
+REMOTE_REPO_PUSH="git@github.com:Marsimplodation/dotfiles.git"
+REMOTE_REPO_PULL="https://github.com/Marsimplodation/dotfiles.git"
 TMPDIR="$(mktemp -d)"
 STAGE="$TMPDIR/stage"
 REPO="$TMPDIR/repo"
@@ -40,7 +41,7 @@ collect_dotfiles() {
 
 push_repo() {
   echo "[*] Cloning remote repo..."
-  git clone --depth=1 "$REMOTE_REPO" "$REPO"
+  git clone --depth=1 "$REMOTE_REPO_PUSH" "$REPO"
 
   echo "[*] Collecting dotfiles..."
   collect_dotfiles
@@ -62,7 +63,7 @@ push_repo() {
 
 pull_repo() {
   echo "[*] Cloning repo..."
-  git clone --depth=1 "$REMOTE_REPO" "$REPO"
+  git clone --depth=1 "$REMOTE_REPO_PULL" "$REPO"
 
   echo "[*] Copying configs back..."
   for f in "${FILES[@]}"; do
