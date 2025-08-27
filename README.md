@@ -16,6 +16,16 @@ Welcome to my dotfiles repository! This repository contains my personal configur
 * `bin/`: Custom scripts indexed by `.zshrc`.
 * `.zshrc`: My Zsh configuration file with Oh My Zsh plugins and themes.
 
+## Required Packages
+
+Before installing the dotfiles, make sure the following packages are installed on Arch Linux:
+
+```sh
+sudo pacman -S hyprland hyprpaper waybar noto-fonts nerd-fonts tmux git neovim zsh
+```
+
+Also install https://elkowar.github.io/eww/
+
 ## Installation
 
 To install these dotfiles using the install script:
