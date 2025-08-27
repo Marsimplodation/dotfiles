@@ -84,10 +84,35 @@ pull_repo() {
   fi
 }
 
+install_deps() {
+  echo "[*] Installing dependencies..."
+
+  # Install TPM
+  if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
+    echo " - Installing tmux plugin manager (TPM)"
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+  else
+    echo " - TPM already installed"
+  fi
+
+  # Install Oh My Zsh
+  if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
+    echo " - Installing Oh My Zsh"
+    RUNZSH=no KEEP_ZSHRC=yes \
+      sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  else
+    echo " - Oh My Zsh already installed"
+  fi
+
+  # Finally, pull dotfiles
+  pull_repo
+}
+
 
 case "${1:-}" in
   push) push_repo ;;
   pull) pull_repo ;;
-  *) echo "Usage: $0 {push|pull}" ; exit 1 ;;
+  install) install_deps ;;
+  *) echo "Usage: $0 {push|pull|install}" ; exit 1 ;;
 esac
 
