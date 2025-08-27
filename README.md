@@ -1,6 +1,6 @@
 # My Dotfiles
 
-Welcome to my dotfiles repository! This repository contains my personal configuration files for various tools and applications that I use. 
+Welcome to my dotfiles repository! This repository contains my personal configuration files for various tools and applications that I use.
 
 ## Screenshots
 
@@ -8,27 +8,46 @@ Welcome to my dotfiles repository! This repository contains my personal configur
 ![Screenshot 2](screenshots/screenshot2.png)
 
 ## Contents
-
-- `.config/wofi/`: My Wofi configuration files with custom themes and settings.
-- `.config/hypr/`: My Hypr configuration files for window management.
-- `.config/nvim/`: My Neovim configuration files with plugins and key mappings.
-- `.config/kitty/`: My Kitty terminal emulator configuration files with custom themes
-- `.config/waybar/`: My Waybar configuration files with custom modules and styles.
-- `.config/eww/`: My Eww config files for the quick conrol panel 
-- `bin`: A few custom scripts, that get indexed by the .zshrc
-- `.zshrc`: My Zsh configuration file with Oh My Zsh plugins and themes.
+* `hypr/`: My Hypr configuration files for window management.
+* `nvim/`: My Neovim configuration files with plugins and key mappings.
+* `kitty/`: My Kitty terminal emulator configuration files with custom themes.
+* `waybar/`: My Waybar configuration files with custom modules and styles.
+* `eww/`: My Eww config files for the quick control panel.
+* `bin/`: Custom scripts indexed by `.zshrc`.
+* `.zshrc`: My Zsh configuration file with Oh My Zsh plugins and themes.
 
 ## Installation
 
-To install these dotfiles, you can clone the repository to your config folder
-and configure hyprpaper for your wallpaper of choice
+To install these dotfiles using the install script:
+
+1. **Download the install script**:
 
 ```sh
-git clone --recursive https://github.com/Marsimplodation/dotfiles.git dotfiles
-cp -r dotfiles/* ~/
+curl -fsSL -o ~/dotfiles-install.sh https://raw.githubusercontent.com/Marsimplodation/dotfiles/main/bin/dotfiles
 ```
+
+2. **Make it executable**:
+
+```sh
+chmod +x ~/dotfiles-install.sh
+```
+
+3. **Run the install command**:
+
+```sh
+~/dotfiles-install.sh install
+```
+
+This will:
+
+* Install TPM (Tmux Plugin Manager) if not present.
+* Install Oh My Zsh if not present.
+* Pull the dotfiles repository and copy the configuration files into the appropriate locations.
+
+> **Note:** The script should be run as your regular user, not as root.
+> **Note:** After installing, configure `hyprpaper` or any other system-specific settings.
 
 ## Credits
 
-background image in my screenshots:
-https://wallpapersden.com/frieren-hd-frieren-beyond-journey-s-end-wallpaper/1920x1080/
+Background image in screenshots:
+[Frieren – Beyond Journey’s End Wallpaper](https://wallpapersden.com/frieren-hd-frieren-beyond-journey-s-end-wallpaper/1920x1080/)
