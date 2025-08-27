@@ -1,3 +1,40 @@
+;;------------------------- Death Count -------------------------
+(defwindow DeathPanel
+            :monitor 0
+           :geometry (geometry :x "10px"
+                               :y "0px"
+                               :width "300px"
+                               :height "100px"
+                               :anchor "top right")
+            :exclusive false
+            :stacking "overlay"
+
+  (DeathPanelContent))
+
+(defwidget DeathPanelContent []
+(box :orientation "v"
+:halign "fill"
+:space-evenly false
+(BossName)
+(DeathCount)
+))
+
+(defwidget BossName []
+(box :orientation "h"
+:halign "fill"
+:space-evenly true
+:class "BossName"
+(label :text "${boss_data.name}")
+))
+(defwidget DeathCount []
+(box :orientation "h"
+:halign "fill"
+:space-evenly true
+:class "DeathCount"
+(label :text "${boss_data.count}" :wrap true)
+))
+
+;;------------------------- sidepanel -------------------------
 (defwindow sidepanel [screen]
             :monitor screen
            :geometry (geometry :x "10px"
@@ -53,9 +90,17 @@
 :spacing 1
 :class "quick_control"
 (label :text "Quick Controls")
-(poweroff)
-(icon_button :icon "   Screenshot" :command "~/.config/eww/scripts/screenshot > ~/eww_log")
+(quick_row_1)
 ))
+
+(defwidget quick_row_1 []
+(box :orientation "h"
+(icon_button :icon " " :command "loginctl kill-session self")
+(icon_button :icon " " :command "reboot")
+(icon_button :icon " " :command "shutdown now")
+(icon_button :icon " " :command "~/.config/eww/scripts/screenshot > ~/eww_log")
+)
+)
 
 
 
@@ -101,15 +146,6 @@
 
 
 
-(defwidget poweroff []
-(box :orientation "h"
-:halign "fill"
-:space-evenly true
-(icon_button :icon " Logout" :command "loginctl kill-session self")
-(icon_button :icon " Reboot" :command "reboot")
-(icon_button :icon "  Shutdown" :command "shutdown now")
-)
-)
 
 ;;variables
 (defpoll time :interval "5s"
@@ -118,13 +154,16 @@
   `~/.config/eww/scripts/mediapoll`)
 (defpoll audio_devices :interval "60s"
 `~/.config/eww/scripts/audio -l`)
+(defpoll boss_data :interval "50ms"
+  `~/.config/eww/scripts/BossPanel show`)
 
 
 ;;helper
 (defwidget icon_button [icon command]
 (box :class "icon"
 :orientation "h"
-:halign "fill"
+:width 40
+:height 40
 (button :onclick "${command}"
 (label :wrap true :text "${icon}")))
 )
@@ -133,6 +172,8 @@
 (box :class "icon"
 :orientation "h"
 :halign "start"
+:width 40
+:height 40
 :space-evenly false
 (label :text "${icon}"))
 )

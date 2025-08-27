@@ -109,9 +109,6 @@ export PATH=~/.local/bin:$PATH
 export PATH=~/.cargo/bin:$PATH
 export XMODIFIERS=@im=fcitx
 
-
-# Load Angular CLI autocompletion.
-source <(ng completion script)
-
 ## aliases
 alias firefox=firefox-developer-edition
+alias update='yay ; flatpak update'

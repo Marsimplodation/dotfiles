@@ -93,6 +93,7 @@
     "network#enp7s0",
     "custom/spacer",
     "custom/vr",
+    "custom/manga",
     // "battery"
     "custom/sidepanel"
   ],
@@ -117,6 +118,11 @@
     "format": "{}  ",
     "on-click": "~/.config/waybar/scripts/sidepanel"
   },
+  "custom/manga": {
+    "format": "{} 🕮",
+    "on-click": "~/.config/waybar/scripts/manga"
+  },
+  
   
   "custom/vr": {
       "exec": "~/.config/waybar/scripts/vr",

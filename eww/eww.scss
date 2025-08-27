@@ -2,6 +2,26 @@
   all: unset; //Unsets everything so you can style everything from scratch
 }
 
+//------------------------- Death Count -------------------------
+
+.DeathPanel {
+	background-image: url("/home/marius/.config/eww/test.png");
+	background-size: 320px 120px;
+	padding-top: 20px;
+	margin-bottom: 20px;
+}
+.DeathCount {
+	color: rgba(250,00,0,1.0);
+	font-size: 1.8em;
+	font-family: "FontAwesome Regular";
+}
+.BossName {
+	color: rgba(20,20,20,1.0);
+	font-size: 1.8em;
+	font-family: "FontAwesome Regular";
+}
+//------------------------- Side Panel -------------------------
+
 .sidepanel {
 	background-color: rgba(10,10,10,0.79);
 	border-radius: 10px;
@@ -24,6 +44,7 @@
 		color: rgba(250,00,204,0.8);
 	}
 }
+
 .media_info{
 	font-size: 0.9em;
 	margin: 12px;

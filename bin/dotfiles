@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+REMOTE_REPO="git@github.com:Marsimplodation/dotfiles.git"
+TMPDIR="$(mktemp -d)"
+STAGE="$TMPDIR/stage"
+REPO="$TMPDIR/repo"
+
+FILES=(
+  "$HOME/.tmux.conf"
+  "$HOME/.zshrc"
+  "$HOME/bin"
+  "$HOME/.config/eww"
+  "$HOME/.config/hypr"
+  "$HOME/.config/kitty"
+  "$HOME/.config/nvim"
+  "$HOME/.config/waybar"
+)
+
+# Exclude patterns (relative to repo root)
+EXCLUDES=(
+  ".git"
+  "screenshots"
+  "README.md"
+)
+
+trap "rm -rf '$TMPDIR'" EXIT
+
+collect_dotfiles() {
+  mkdir -p "$STAGE"
+  for f in "${FILES[@]}"; do
+    dest="$STAGE/$(basename "$f")"
+    if [[ -d "$f" ]]; then
+      cp -r "$f" "$dest"
+    elif [[ -f "$f" ]]; then
+      cp "$f" "$dest"
+    fi
+  done
+}
+
+push_repo() {
+  echo "[*] Cloning remote repo..."
+  git clone --depth=1 "$REMOTE_REPO" "$REPO"
+
+  echo "[*] Collecting dotfiles..."
+  collect_dotfiles
+
+  echo "[*] Syncing into repo..."
+  # Build rsync exclude args dynamically
+  RSYNC_EXCLUDES=()
+  for pat in "${EXCLUDES[@]}"; do
+    RSYNC_EXCLUDES+=("--exclude=$pat")
+  done
+
+  rsync -av --delete "${RSYNC_EXCLUDES[@]}" "$STAGE"/ "$REPO"/
+
+  cd "$REPO"
+  git add -A
+  git commit -m "Update dotfiles ($(date))" || echo "No changes to commit"
+  git push
+}
+
+pull_repo() {
+  echo "[*] Cloning repo..."
+  git clone --depth=1 "$REMOTE_REPO" "$REPO"
+
+  echo "[*] Copying configs back..."
+  for f in "${FILES[@]}"; do
+    name=$(basename "$f")
+    src="$REPO/$name"
+    if [[ -e "$src" ]]; then
+      if [[ -d "$src" ]]; then
+        rsync -av --delete "$src"/ "$f"/
+      else
+        cp "$src" "$f"
+      fi
+    fi
+  done
+
+  # Re-run TPM if tmux config updated
+  if [[ -f "$REPO/.tmux.conf" ]]; then
+    echo "[*] Reloading tmux plugins..."
+    ~/.tmux/plugins/tpm/tpm || true
+  fi
+}
+
+
+case "${1:-}" in
+  push) push_repo ;;
+  pull) pull_repo ;;
+  *) echo "Usage: $0 {push|pull}" ; exit 1 ;;
+esac
+

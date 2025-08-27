@@ -1,0 +1,5 @@
+#!/bin/bash
+
+fileName="$HOME/Pictures/$(date '+%y%m%d_%H-%M-%S').png"
+sleep 0.1 && grim -g "$(slurp)" "$fileName" && wl-copy < "$fileName" && rm "$fileName"
+
