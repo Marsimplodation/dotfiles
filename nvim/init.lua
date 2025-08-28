@@ -65,6 +65,7 @@ require("custom.text-settings")
 require("custom.telescope-setup")
 require("custom.dap-setup")
 require("custom.theme")
+require("custom.pets")
 -- [[ Setting options ]]
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
