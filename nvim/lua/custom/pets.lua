@@ -29,6 +29,27 @@ local pets = {
 local pet_win = nil
 local pet_buf = nil
 local current_pet = 1
+local cache_file = vim.fn.stdpath("data") .. "/pet_cache.txt"
+
+local function save_current_pet()
+  local f = io.open(cache_file, "w")
+  if f then
+    f:write(tostring(current_pet))
+    f:close()
+  end
+end
+
+-- Load current pet from cache
+local function load_current_pet()
+  local f = io.open(cache_file, "r")
+  if f then
+    local idx = tonumber(f:read("*a"))
+    f:close()
+    if idx and idx >= 1 and idx <= #pets.cats then
+      current_pet = idx
+    end
+  end
+end
 
 local function strwidth(s)
   return vim.fn.strdisplaywidth(s)
@@ -73,9 +94,11 @@ vim.api.nvim_create_autocmd("VimResized", {
 
 --- Cycle pets
 local function show_next_pet()
-  create_pet(pets.cats[current_pet])
   current_pet = (current_pet % #pets.cats) + 1  -- increment mod size
+  create_pet(pets.cats[current_pet])
+  save_current_pet()
 end
 
 vim.api.nvim_create_user_command("CyclePets", show_next_pet, {})
-show_next_pet()
+load_current_pet()
+create_pet(pets.cats[current_pet])
