@@ -1,6 +1,11 @@
 * {
   all: unset; //Unsets everything so you can style everything from scratch
 }
+$color-red: #FF0000;
+$color-green: #00FF00;
+$color-blue: #0000FF;
+$color-bg: rgba(80,80,80, 1.0);
+$color-accent: rgba(250,00,204,0.8);
 
 //------------------------- Death Count -------------------------
 
@@ -23,7 +28,7 @@
 //------------------------- Side Panel -------------------------
 
 .sidepanel {
-	background-color: rgba(10,10,10,0.79);
+	background-color: rgba(30, 30, 40, 0.8);
 	border-radius: 10px;
 	border: 2px solid rgba(25,25,25,0.5);
 }
@@ -31,23 +36,90 @@
 .volume_slider {
 }
 
+scale trough {
+  margin-left: 14px;
+  margin-right: 14px;
+  background-color: $color-bg;
+  border-radius: 15px;
+}
+
+scale trough highlight {
+  /* When in fine-tune mode */
+  background-color: $color-accent;
+  border-radius: 15px;
+}
+
+scale slider {
+  /* When in fine-tune mode */
+  box-shadow: 0 0 0 3px white;
+  padding: 6px;
+  background-color: white;
+  color: rgba(150, 150, 150, 1.0);
+  border-radius: 15px;
+}
+
+
 //Global Styles
 .icon {
-	background-color: rgba(20,20,20,0.8);
+	background-color: $color-bg;
 	color: #ffffff;
-	border: 1px solid #6D6D6D;
-	border-radius: 7px;
 	font-size: 0.8em;
-	padding: 10px;
+	text-shadow: 0px 0px 10 #000;
+	margin: 2px;
 	font-family: "FontAwesome Regular";
+	border-radius: 15px;
+	.button {
+		padding: 10px;
+
+	}
 	& :hover {
-		color: rgba(250,00,204,0.8);
+	border-radius: 15px;
+		background-color: $color-accent; 
 	}
 }
 
-.media_info{
+.media_control {
+	background-color: rgba(80,80,80, 0.0);
+	color: #ffffff;
+	font-size: 1.2em;
+	margin: 5px;
+	padding: 2px;
+	font-family: "FontAwesome Regular";
+	border-radius: 15px;
+	.button {
+		padding: 10px;
+
+	}
+	& :hover {
+	border-radius: 15px;
+		background-color: rgba(250,00,204,0.8);
+
+	}
+	text-shadow: 0px 0px 10 #000;
+}
+
+.media_info {
+	color: #ffffff;
+	font-size: 1.1em;
+	text-shadow: 0px 0px 10 #000;
+}
+
+.media_div{
 	font-size: 0.9em;
-	margin: 12px;
+	border-radius: 15px;
+	border: 2px solid rgba(25,25,25,0.5);
+	//background-image: url("/tmp/cover_blur.png");
+	background-size: cover;     // ✅ fill box while keeping aspect
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.media-img {
+	//background-image: url("/tmp/cover_square.png");
+	border-radius: 15px;
+	background-color: $color-bg;
+	background-size: cover;     // ✅ fill box while keeping aspect
+	background-position: center;
+	background-repeat: no-repeat;
 }
 .title_bar {
 	color: #ffffff;
@@ -60,7 +132,16 @@
 
 .quick_control {
 	font-size: 1.2em;
-	background-color: rgba(30,30,30,0.8);
+	//background-color: rgba(30,30,30,0.8);
+	margin-bottom: 5px;
+	margin-left: 5px;
+	margin-right: 5px;
+	border-radius: 7px;
+	padding: 5px;
+}
+.audio_control {
+	font-size: 1.0em;
+	//background-color: rgba(30,30,30,0.8);
 	margin-bottom: 5px;
 	margin-left: 5px;
 	margin-right: 5px;

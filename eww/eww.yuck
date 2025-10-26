@@ -1,46 +1,10 @@
-;;------------------------- Death Count -------------------------
-(defwindow DeathPanel
-            :monitor 0
-           :geometry (geometry :x "10px"
-                               :y "0px"
-                               :width "300px"
-                               :height "100px"
-                               :anchor "top right")
-            :exclusive false
-            :stacking "overlay"
-
-  (DeathPanelContent))
-
-(defwidget DeathPanelContent []
-(box :orientation "v"
-:halign "fill"
-:space-evenly false
-(BossName)
-(DeathCount)
-))
-
-(defwidget BossName []
-(box :orientation "h"
-:halign "fill"
-:space-evenly true
-:class "BossName"
-(label :text "${boss_data.name}")
-))
-(defwidget DeathCount []
-(box :orientation "h"
-:halign "fill"
-:space-evenly true
-:class "DeathCount"
-(label :text "${boss_data.count}" :wrap true)
-))
-
 ;;------------------------- sidepanel -------------------------
 (defwindow sidepanel [screen]
             :monitor screen
            :geometry (geometry :x "10px"
                                :y "0px"
                                :width "300px"
-                               :height "95%"
+                               :height "96%"
                                :anchor "center right")
             :exclusive true
             :stacking "overlay"
@@ -59,26 +23,40 @@
 
 (defwidget audio_panel []
 (box :orientation "v"
-:halign "fill"
+:halign "center"
 :space-evenly false
 :spacing 1
-:class "quick_control"
-(button :onclick "eww update display_audio_devices=${!display_audio_devices}"
-  (label :text {display_audio_devices ? "Audio Devices   " : "Audio Devices   "}))
-  (for entry in {display_audio_devices ? audio_devices : []}
-   (icon_button 
-            :icon "   ${entry.node_description}"
-            :command '~/.config/eww/scripts/audio -s ${entry.node_name}' )
-    
-    ))
+:class "audio_control"
+(audio_volume_control)
+(for entry in {display_audio_devices ? audio_devices : []}
+(icon_button 
+        :icon "   ${entry.node_description}"
+        :command '~/.config/eww/scripts/audio -s ${entry.node_name}' )
 )
+))
+
+(defwidget audio_volume_control []
+(box :orientation "h"
+:halign "center"
+:valign "center"
+:space-evenly false
+:spacing 1
+(label :text " ")
+(scale :value {audio_volume.vol} :width 300 :min 0 :max 100 :onchange "pactl set-sink-volume @DEFAULT_SINK@ {}%")
+(button :onclick "eww update display_audio_devices=${!display_audio_devices}"
+(label :text {display_audio_devices ? "  " : "  "})
+)
+)
+)
+
+
 (defvar display_audio_devices false)
 
 (defwidget title []
 (box :orientation "h"
 :halign "fill"
 :space-evenly false
-:spacing 160
+:spacing 145
 :class "title_bar"
 (label :text "Dashboard - ${time.hour}:${time.min}")
 (button :onclick "eww close sidepanel" "")
@@ -89,7 +67,6 @@
 :halign "fill"
 :spacing 1
 :class "quick_control"
-(label :text "Quick Controls")
 (quick_row_1)
 ))
 
@@ -109,8 +86,10 @@
 :halign "fill"
 :space-evenly false
 :class "quick_control"
-(label :text "Media Control")
 (box :orientation "h"
+:class "media_div"
+:style 'background-image: url("${media.cover_blured}")';
+:spacing -120
 (media_show)
 (media_info)
 )
@@ -119,18 +98,23 @@
 (defwidget media_show[]
 (box :orientation "v"
 :space-evenly false
-:halign "fill"
-:class "media_info"
-(label :wrap true :text "${media.artist}")
-(image :image-width 100 :image-hieght 100 :path "${media.pic}")
+:halign "start"
+:valign "center"
+:width 100
+:height 100
+:class "media-img"
+:style 'margin: 10px; background-image: url("${media.cover}")';
 ))
 
 (defwidget media_info []
 (box :orientation "v"
 :halign "fill"
+:valign "center"
 :space-evenly false
-:class "media_info"
-(label :text "${media.title}" :wrap true)
+
+
+(label :class "media_info" :xalign 0 :wrap false :limit-width 25 :text "${media.title}")
+(label :class "media_info" :xalign 0 :wrap false :limit-width 25 :text "${media.artist}")
 (media_control)
 ))
 
@@ -138,7 +122,7 @@
 (box :orientation "h"
 :halign "fill"
 :space-evenly true
-:class "icon"
+:class "media_control"
 (button :onclick "playerctl previous" (label :text ""))
 (button :onclick "playerctl play-pause" (label :text {media.Playing ? "" : ""}))
 (button :onclick "playerctl next" (label :text ""))
@@ -150,10 +134,16 @@
 ;;variables
 (defpoll time :interval "5s"
   `date +'{"hour":"%H","min":"%M"}'`)
+
 (defpoll media :interval "50ms"
   `~/.config/eww/scripts/mediapoll`)
+
 (defpoll audio_devices :interval "60s"
 `~/.config/eww/scripts/audio -l`)
+
+(defpoll audio_volume :interval "50ms"
+`~/.config/eww/scripts/audio_volume`)
+
 (defpoll boss_data :interval "50ms"
   `~/.config/eww/scripts/BossPanel show`)
 
@@ -163,13 +153,13 @@
 (box :class "icon"
 :orientation "h"
 :width 40
-:height 40
+:height 50
 (button :onclick "${command}"
 (label :wrap true :text "${icon}")))
 )
 
 (defwidget icon [icon]
-(box :class "icon"
+(box :class "icon2jkhk"
 :orientation "h"
 :halign "start"
 :width 40
