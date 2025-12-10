@@ -21,7 +21,7 @@ FILES=(
 # Exclude patterns (relative to repo root)
 EXCLUDES=(
   ".git"
-  "screenshots"
+  "screenshot1.png"
   "README.md"
 )
 
