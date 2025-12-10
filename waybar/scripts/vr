@@ -33,10 +33,12 @@ echo "$NEW_STATE" > "$STATE_FILE"
 
 if [ "$STATE" == "on" ]; then
   envision -S
+  killall easyeffects
   pactl set-default-sink wivrn
 else
   dbus-send --dest=io.github.wivrn.Server --type=method_call /io/github/wivrn/Server io.github.wivrn.Server.Quit
   killall envision
+  easyeffects --gapplication-service
 fi
 # Output the new state for Waybar
 if [ "$STATE" == "on" ]; then
