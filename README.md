@@ -4,7 +4,7 @@ Welcome to my dotfiles repository! This repository contains my personal configur
 
 ## Screenshots
 
-![Screenshot 1](screenshots/screenshot1.png)
+![Screenshot 1](screenshot1.png)
 
 ## Contents
 * `hypr/`: My Hypr configuration files for window management.
