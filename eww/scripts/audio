@@ -1,0 +1,7 @@
+#!/bin/bash
+num_args=$#
+if [ $num_args -eq 1 ]; then
+	python3 ~/.config/eww/scripts/audio_control.py $1
+elif [ $num_args -eq 2 ]; then
+	python3 ~/.config/eww/scripts/audio_control.py $1 $2
+fi

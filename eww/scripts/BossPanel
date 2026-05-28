@@ -1,0 +1,99 @@
+#!/bin/bash
+
+# Base directory
+BASE_DIR="$HOME/.local/state/bosscounter"
+
+# Ensure the directory exists
+mkdir -p "$BASE_DIR"
+
+# File that stores the current boss
+STATE_FILE="$BASE_DIR/state"
+
+# Function to set the current boss
+set_boss() {
+    local boss="$1"
+    echo "$boss" > "$STATE_FILE"
+    # Initialize boss file if it doesn't exist
+    if [ ! -f "$BASE_DIR/$boss" ]; then
+        echo 0 > "$BASE_DIR/$boss"
+    fi
+    echo "Current boss set to '$boss'."
+}
+
+# Function to increment kill count
+increment_boss() {
+    if [ ! -f "$STATE_FILE" ]; then
+        echo "No boss selected. Use '$0 set [boss_name]' first."
+        exit 1
+    fi
+    local boss
+    boss=$(cat "$STATE_FILE")
+    local boss_file="$BASE_DIR/$boss"
+    
+    if [ ! -f "$boss_file" ]; then
+        echo 0 > "$boss_file"
+    fi
+    
+    local count
+    count=$(cat "$boss_file")
+    count=$((count + 1))
+    echo "$count" > "$boss_file"
+    echo "Incremented kill count for '$boss' to $count."
+}
+
+# Function to show kill count
+show_count() {
+    if [ ! -f "$STATE_FILE" ]; then
+        echo "No boss selected."
+        exit 1
+    fi
+    local boss
+    boss=$(cat "$STATE_FILE")
+    local boss_file="$BASE_DIR/$boss"
+    
+    if [ ! -f "$boss_file" ]; then
+        echo 0 > "$boss_file"
+    fi
+    
+    local count
+    count=$(cat "$boss_file")
+    echo "{\"name\": \"$boss\", \"count\": $count}"
+}
+
+# Function to list all bosses
+list_bosses() {
+    echo "Bosses:"
+    for file in "$BASE_DIR"/*; do
+        if [[ $(basename "$file") != "state" ]]; then
+            local boss
+            boss=$(basename "$file")
+            local count
+            count=$(cat "$file")
+            echo "$boss: $count"
+        fi
+    done
+}
+
+# Main command dispatcher
+case "$1" in
+    set)
+        set_boss "$2"
+        ;;
+    inc)
+        increment_boss
+        ;;
+    show)
+        show_count
+        ;;
+    list)
+        list_bosses
+        ;;
+    *)
+        echo "Usage:"
+        echo "  $0 set [boss_name]   - Set the current boss"
+        echo "  $0 inc               - Increment kill count for current boss"
+        echo "  $0 show              - Show kill count for current boss"
+        echo "  $0 list              - List all bosses and their kill counts"
+        ;;
+esac
+
