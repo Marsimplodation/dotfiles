@@ -81,7 +81,7 @@ local on_attach = function(_, bufnr)
   capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
   
   -- clangd setup
-  require("lspconfig").clangd.setup {
+  vim.lsp.config("clangd", {
     on_attach = on_attach,
     capabilities = capabilities,
     cmd = {
@@ -89,7 +89,7 @@ local on_attach = function(_, bufnr)
       "--offset-encoding=utf-16",
       "--compile-commands-dir=./build/",
     },
-  }
+  })
   -- Ensure the servers above are installed
   local mason_lspconfig = require 'mason-lspconfig'
   local lspconfig = require 'lspconfig'
@@ -100,11 +100,11 @@ local on_attach = function(_, bufnr)
   
   -- manually setup each server
   for server_name, server_opts in pairs(servers) do
-    lspconfig[server_name].setup {
+    vim.lsp.config(server_name, {
       capabilities = capabilities,
       on_attach = on_attach,
       settings = server_opts,
       filetypes = server_opts.filetypes,
-    }
+    })
   end
   vim.diagnostic.config({ virtual_lines = true })

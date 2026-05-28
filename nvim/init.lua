@@ -65,7 +65,6 @@ require("custom.text-settings")
 require("custom.telescope-setup")
 require("custom.dap-setup")
 require("custom.theme")
-require("custom.pets")
 -- [[ Setting options ]]
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
@@ -86,15 +85,11 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- See `:help nvim-treesitter`
 -- Defer Treesitter setup after first render to improve startup time of 'nvim {filename}'
 vim.defer_fn(function()
-  require('nvim-treesitter.configs').setup {
-    -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash' },
+  require('nvim-treesitter').setup {
+    init = function()
+      -- ...
+    end,
 
-    -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
-    auto_install = false,
-
-    highlight = { enable = true },
-    indent = { enable = true },
     incremental_selection = {
       enable = true,
       keymaps = {
@@ -150,6 +145,15 @@ vim.defer_fn(function()
     },
   }
 end, 0)
+
+      vim.api.nvim_create_autocmd('FileType', { 
+        callback = function() 
+          -- Enable treesitter highlighting and disable regex syntax
+          --pcall(vim.treesitter.start) 
+          -- Enable treesitter-based indentation
+          -- vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()" 
+        end, 
+      }) 
 
   require("custom.lsp-setup")
   require("custom.keybinds-setup")

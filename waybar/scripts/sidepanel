@@ -1,3 +1,0 @@
-var=$(hyprctl activeworkspace |grep monitorID)
-screen=${var##*:}
-eww open --toggle sidepanel --arg "screen=${screen:1}"
